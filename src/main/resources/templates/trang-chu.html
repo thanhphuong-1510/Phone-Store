@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Trang chủ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <style>
+        .card:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body style="background-color: #f8f9fa!important">
+<nav class="navbar navbar-expand-sm bg-light justify-content-end">
+    <ul class="nav justify-content-start">
+        <div style="display:flex;">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Trang chủ</a>
+            </li>
+        </div>
+    </ul>
+    <ul class="nav justify-content-end">
+        <div style="display:flex;" sec:authorize="isAuthenticated()">
+            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link" th:href="@{/admin}">Quản lý shop</a>
+            </li>
+            <li class="nav-item">
+                <p style="padding: .5rem 1rem; margin: 0 !important;">Xin chào, <span sec:authentication="principal.username"></span>!</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Đăng xuất</a>
+            </li>
+        </div>
+        <div style="display:flex;" sec:authorize="!isAuthenticated()">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-ky}">Đăng ký</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-nhap}">Đăng nhập</a>
+            </li>
+        </div>
+    </ul>
+</nav>
+<br/><br/>
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-3" th:each="dienThoai : ${dienThoaiList}">
+            <a th:href="@{'/dien-thoai/chi-tiet/' + ${dienThoai.id}}" style="color: black; text-decoration: none;">
+                <div class="card">
+                    <img style="height: 300px;" th:src="@{${dienThoai.anh}}" alt="Ảnh điện thoại"/>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${dienThoai.ten}"></h5>
+                        <ul th:each="plDienThoai, stat : ${dienThoai.phanLoaiDienThoaiList}" style="padding: 0 0 0 1rem;">
+                            <li th:if="${stat.index == 0}" th:text="'Số lượng: ' + ${plDienThoai.soLuong}"></li>
+                            <li th:if="${stat.index == 0}" th:text="'Giá tiền: ' + ${plDienThoai.giaTien}"></li>
+                            <li th:if="${stat.index == 0}" th:text="'Màu sắc: ' + ${plDienThoai.mauSac.moTa}"></li>
+                            <li th:if="${stat.index == 0}" th:text="'Dung lượng: ' + ${plDienThoai.dungLuong.moTa}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
