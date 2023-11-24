@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý điện thoại</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <style>
+        .my-pagination {
+            list-style: none;
+            padding: 0;
+        }
+
+        .my-pagination a {
+            text-decoration: none;
+            display: inline-block; /* Set display to inline-block */
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            margin: 0 4px; /* Add margin to space out the links */
+            color: #333;
+        }
+
+        .my-pagination a:hover {
+            background-color: #ddd;
+        }
+
+        .active {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body style="background-color: #f8f9fa!important">
+<nav class="navbar navbar-expand-sm bg-light justify-content-end">
+    <ul class="nav justify-content-start">
+        <div style="display:flex;">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Trang chủ</a>
+            </li>
+        </div>
+    </ul>
+    <ul class="nav justify-content-end">
+        <div style="display:flex;" sec:authorize="isAuthenticated()">
+            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link" th:href="@{/admin}">Quản lý shop</a>
+            </li>
+            <li class="nav-item">
+                <p style="padding: .5rem 1rem; margin: 0 !important;">Xin chào, <span sec:authentication="principal.username"></span>!</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Đăng xuất</a>
+            </li>
+        </div>
+        <div style="display:flex;" sec:authorize="!isAuthenticated()">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-ky}">Đăng ký</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-nhap}">Đăng nhập</a>
+            </li>
+        </div>
+    </ul>
+</nav>
+<div class="container-fluid mt-3">
+    <h2 class="text-center">QUẢN LÝ ĐIỆN THOẠI</h2>
+    <div class="row">
+        <div class="offset-6 col-6 text-end">
+            <a style="text-decoration: none; color: black;" th:href="@{/admin/quan-ly-dien-thoai/them-dien-thoai}">
+                <button type="button" class="btn btn-info">
+                    Thêm mới
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <table class="table table-hover table-bordered">
+            <thead class="table-dark">
+            <tr>
+                <th class="text-center" scope="col">Ảnh</th>
+                <th class="text-center" scope="col">Tên</th>
+                <th class="text-center" scope="col">Hãng</th>
+                <th class="text-center" scope="col">Thông số kỹ thuật</th>
+                <th class="text-center" scope="col">Phân loại điện thoại</th>
+                <th class="text-center" scope="col">Bảo hành</th>
+                <th class="text-center" scope="col">Mã giảm giá</th>
+                <th class="text-center" scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody th:each="dienThoai : ${dienThoaiList}">
+            <tr>
+                <td>
+                    <img style="width: 300px; height: 300px;"
+                         th:src="@{${dienThoai.anh}}" alt="Ảnh điện thoại"/>
+                </td>
+                <td th:text="${dienThoai.ten}"></td>
+                <td th:text="${dienThoai.hang.ten}"></td>
+                <td>
+                    <ul>
+                        <li th:text="'Kích thước: ' + ${dienThoai.thongSoKT.kichThuoc}"></li>
+                        <li th:text="'Độ phân giải: ' + ${dienThoai.thongSoKT.doPhanGiai}"></li>
+                        <li th:text="'Camera: ' + ${dienThoai.thongSoKT.camera}"></li>
+                        <li th:text="'Chip: ' + ${dienThoai.thongSoKT.chip}"></li>
+                        <li th:text="'Thẻ sim: ' + ${dienThoai.thongSoKT.theSim}"></li>
+                        <li th:text="'Hệ điều hành: ' + ${dienThoai.thongSoKT.heDieuHanh}"></li>
+                    </ul>
+                </td>
+                <td>
+                    <ul th:each="plDienThoai : ${dienThoai.phanLoaiDienThoaiList}">
+                        <li th:text="'Số lượng: ' + ${plDienThoai.soLuong}"></li>
+                        <li th:text="'Giá tiền: ' + ${plDienThoai.giaTien}"></li>
+                        <li th:text="'Màu sắc: ' + ${plDienThoai.mauSac.moTa}"></li>
+                        <li th:text="'Dung lượng: ' + ${plDienThoai.dungLuong.moTa}"></li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li th:text="'Thời gian hết hạn: ' + ${dienThoai.baoHanh.thoiGian}"></li>
+                        <li th:text="'Mô tả: ' + ${dienThoai.baoHanh.moTa}"></li>
+                    </ul>
+                </td>
+                <td>
+                    <ul th:each="maGG : ${dienThoai.maGGList}">
+                        <li th:text="${maGG.code} + ': ' + ${maGG.moTa}"></li>
+                    </ul>
+                </td>
+                <td class="text-center">
+                    <a style="text-decoration: none; color: black;" th:href="@{'/admin/quan-ly-dien-thoai/sua-dien-thoai/' + ${dienThoai.id}}">
+                        <button type="button" class="btn btn-success">
+                            Sửa
+                        </button>
+                    </a>
+                    <a style="text-decoration: none; color: black;" th:href="@{'/admin/quan-ly-dien-thoai/xoa-dien-thoai/' + ${dienThoai.id}}">
+                        <button type="button" class="btn btn-danger">
+                            Xóa
+                        </button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col-12 text-end">
+            <span th:if="${dienThoaiList.totalPages > 0}" class="my-pagination"
+                  th:each="trang : ${soTrang}">
+                <a th:href="@{/admin/quan-ly-dien-thoai(size=${dienThoaiList.size}, page=${trang})}" th:text=${trang}
+                   th:class="${trang==dienThoaiList.number + 1} ? active"></a>
+            </span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

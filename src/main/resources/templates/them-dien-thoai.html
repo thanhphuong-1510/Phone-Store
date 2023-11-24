@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm điện thoại</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <script type="text/javascript" th:src="@{/multiselect-dropdown.js}"></script>
+    <script type="text/javascript" th:src="@{/them-moi-phan-loai.js}"></script>
+    <script type="text/javascript" th:src="@{/xoa-phan-loai.js}"></script>
+</head>
+<body style="background-color: #f8f9fa!important">
+<nav class="navbar navbar-expand-sm bg-light justify-content-end">
+    <ul class="nav justify-content-start">
+        <div style="display:flex;">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Trang chủ</a>
+            </li>
+        </div>
+    </ul>
+    <ul class="nav justify-content-end">
+        <div style="display:flex;" sec:authorize="isAuthenticated()">
+            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link" th:href="@{/admin}">Quản lý shop</a>
+            </li>
+            <li class="nav-item">
+                <p style="padding: .5rem 1rem; margin: 0 !important;">Xin chào, <span sec:authentication="principal.username"></span>!</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Đăng xuất</a>
+            </li>
+        </div>
+        <div style="display:flex;" sec:authorize="!isAuthenticated()">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-ky}">Đăng ký</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-nhap}">Đăng nhập</a>
+            </li>
+        </div>
+    </ul>
+</nav>
+<div class="container-fluid mt-3">
+    <h2 class="text-center">THÊM MỚI ĐIỆN THOẠI</h2>
+    <form
+            method="post"
+            th:action="@{/admin/quan-ly-dien-thoai/them-dien-thoai/save}"
+            enctype="multipart/form-data">
+        <div class="row">
+            <h4>Thông tin điện thoại</h4>
+        </div>
+        <div class="row">
+            <div class="col-4 mb-4">
+                <label for="dienthoai_ten" class="form-label">Tên điện thoại</label>
+                <input th:field="*{dienThoai.ten}" type="text" class="form-control" id="dienthoai_ten" placeholder="Tên" required>
+            </div>
+            <div class="col-4 mb-4">
+                <label for="hang_id" class="form-label">Hãng</label>
+                <select id="hang_id" th:field="${selectedHang.selectedHang}" class="form-control">
+                    <option th:each="hang : ${hangList}" th:text="${hang.ten}" th:value="${hang.id}"></option>
+                </select>
+            </div>
+            <div class="col-4 mb-4">
+                <label for="thongSoKT_kichThuoc" class="form-label">Kích thước</label>
+                <input th:field="*{thongSoKT.kichThuoc}" type="text" class="form-control" id="thongSoKT_kichThuoc"
+                       placeholder="Kích thước" required>
+            </div>
+            <div class="col-4 mb-4">
+                <label for="thongSoKT_doPhanGiai" class="form-label">Độ phân giải</label>
+                <input th:field="*{thongSoKT.doPhanGiai}" type="text" class="form-control"
+                       id="thongSoKT_doPhanGiai"
+                       placeholder="Độ phân giải" required>
+            </div>
+            <div class="col-4 mb-4">
+                <label for="thongSoKT_camera" class="form-label">Camera</label>
+                <input th:field="*{thongSoKT.camera}" type="text" class="form-control" id="thongSoKT_camera"
+                       placeholder="Camera" required>
+            </div>
+            <div class="col-4 mb-4">
+                <label for="thongSoKT_chip" class="form-label">Chip</label>
+                <input th:field="*{thongSoKT.chip}" type="text" class="form-control" id="thongSoKT_chip"
+                       placeholder="Chip" required>
+            </div>
+            <div class="col-4 mb-4">
+                <label for="thongSoKT_theSim" class="form-label">Thẻ sim</label>
+                <input th:field="*{thongSoKT.theSim}" type="text" class="form-control" id="thongSoKT_theSim"
+                       placeholder="Thẻ sim" required>
+            </div>
+            <div class="col-4 mb-4">
+                <label for="thongSoKT_heDieuHanh" class="form-label">Hệ điều hành</label>
+                <input th:field="*{thongSoKT.heDieuHanh}" type="text" class="form-control"
+                       id="thongSoKT_heDieuHanh"
+                       placeholder="Hệ điều hành" required>
+            </div>
+            <div class="col-4 mb-4">
+                <label for="anhDienThoai" class="form-label">Ảnh</label>
+                <input name="anhDienThoai" type="file" accept="image/png, image/jpeg" class="form-control" id="anhDienThoai" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <label for="dienthoai_moTaDienThoai">Mô tả</label>
+                <textarea th:field="*{dienThoai.moTaDienThoai}" rows="5" class="form-control" id="dienthoai_moTaDienThoai"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="row mt-3">
+                <div class="col-4">
+                    <h4>Phân loại điện thoại</h4>
+                    <button type="button" class="btn btn-success" onclick="themMoiPhanLoai()">Thêm mới phân loại</button>
+                    <button type="button" class="btn btn-danger" onclick="xoaPhanLoai()">Xóa phân loại</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 row-phanloai" th:each="selectedPhanLoaiDienThoai, stat : ${selectedPhanLoaiDienThoaiList}">
+                    <div class="row">
+                        <div class="col-3 mb-4">
+                            <label th:for="${'pldt_soLuong_' + stat.index}" class="form-label">Số lượng</label>
+                            <input name="selectedSoLuong" type="text" class="form-control"
+                                   th:id="${'pldt_soLuong_' + stat.index}" placeholder="Số lượng" required>
+                        </div>
+                        <div class="col-3 mb-4">
+                            <label th:for="${'pldt_giaTien_' + stat.index}" class="form-label">Giá tiền</label>
+                            <input name="selectedGiaTien" type="text" class="form-control"
+                                   th:id="${'pldt_giaTien_' + stat.index}" placeholder="Giá tiền" required>
+                        </div>
+                        <div class="col-3 mb-4">
+                            <label th:for="${'mauSac_id_' + stat.index}" class="form-label">Màu sắc</label>
+                            <select th:id="${'mauSac_id_' + stat.index}" name="selectedMauSacList" class="form-control">
+                                <option th:each="mauSac : ${mauSacList}" th:text="${mauSac.moTa}" th:value="${mauSac.id}"></option>
+                            </select>
+                        </div>
+                        <div class="col-3 mb-4">
+                            <label th:for="${'dungLuong_id_' + stat.index}" class="form-label">Dung lượng</label>
+                            <select th:id="${'dungLuong_id_' + stat.index}" name="selectedDungLuongList"
+                                    class="form-control">
+                                <option th:each="dungLuong : ${dungLuongList}" th:text="${dungLuong.moTa}" th:value="${dungLuong.id}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-4">
+                <div class="row mt-3">
+                    <h4>Thông tin bảo hành</h4>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <label for="baoHanh_thoiGian" class="form-label">Thời gian</label>
+                        <input th:field="*{baoHanh.thoiGian}" type="date" class="form-control" id="baoHanh_thoiGian" required>
+                    </div>
+                    <div class="col-12 mb-4">
+                        <label for="baoHanh_moTa" class="form-label">Mô tả</label>
+                        <textarea th:field="*{baoHanh.moTa}" rows="3" class="form-control" id="baoHanh_moTa"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="offset-4 col-4">
+                <div class="row mt-3">
+                    <h4>Thông tin mã giảm giá</h4>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <label for="maGG_id" class="form-label">Mã giảm giá</label>
+                        <select multiple="multiple" id="maGG_id" th:field="${selectedMaGGList.selectedMaGGList}" class="form-control">
+                            <option th:each="maGG : ${maGGList}" th:text="${maGG.code}" th:value="${maGG.id}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 mb-5">
+            <div class="col-6 text-end">
+                <button class="btn btn-primary" type="submit">Lưu</button>
+            </div>
+            <div class="col-6">
+                <a style="text-decoration: none; color: black;" th:href="@{/admin/quan-ly-dien-thoai}">
+                    <button type="button" class="btn btn-danger">
+                        Hủy
+                    </button>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
