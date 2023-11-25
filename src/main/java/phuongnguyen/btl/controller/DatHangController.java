@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import phuongnguyen.btl.entity.*;
+import phuongnguyen.btl.entity.DienThoai;
+import phuongnguyen.btl.entity.DonHang;
+import phuongnguyen.btl.entity.PhanLoaiDienThoai;
+import phuongnguyen.btl.entity.ThanhVien;
 import phuongnguyen.btl.service.DienThoaiService;
 import phuongnguyen.btl.service.DonHangService;
 import phuongnguyen.btl.service.PhanLoaiDienThoaiService;
@@ -39,7 +42,6 @@ public class DatHangController {
   public String gdDienThoaiDatHang(@ModelAttribute("dienThoaiId") Integer dienThoaiId,
                                    @ModelAttribute("selectedDienThoai") PhanLoaiDienThoai selectedPhanLoaiDienThoai,
                                    RedirectAttributes redirectAttrs,
-                                   BindingResult bindingResult,
                                    Model model) {
 
     if (selectedPhanLoaiDienThoai.getId() == null) {
@@ -61,23 +63,21 @@ public class DatHangController {
 
     DienThoai dienThoai = dienThoaiService.findById(dienThoaiId);
 
-    SelectedDonHang selectedDonHang = new SelectedDonHang();
-    selectedDonHang.setTongTien(phanLoaiDienThoai.getGiaTien().multiply(new BigDecimal(selectedPhanLoaiDienThoai.getSoLuong())));
-    selectedDonHang.setSoLuong(selectedPhanLoaiDienThoai.getSoLuong());
+    DonHang donHang = new DonHang();
+    donHang.setTongTien(phanLoaiDienThoai.getGiaTien().multiply(new BigDecimal(selectedPhanLoaiDienThoai.getSoLuong())));
+    donHang.setSoLuong(selectedPhanLoaiDienThoai.getSoLuong());
 
     model.addAttribute("dienThoai", dienThoai);
     model.addAttribute("selectedPhanLoaiDienThoai", phanLoaiDienThoai);
-    model.addAttribute("selectedDonHang", selectedDonHang);
+    model.addAttribute("selectedDonHang", donHang);
     model.addAttribute("donHang", new DonHang());
     return "luu-don-hang";
   }
 
   @PostMapping("/save")
   public String gdDienThoaiLuuDonHang(@ModelAttribute("selectedPhanLoaiDienThoai") PhanLoaiDienThoai selectedPhanLoaiDienThoai,
-                                      @ModelAttribute("selectedDonHang") SelectedDonHang selectedDonHang,
-                                      RedirectAttributes redirectAttrs,
-                                      BindingResult bindingResult,
-                                      Model model) {
+                                      @ModelAttribute("selectedDonHang") DonHang selectedDonHang,
+                                      BindingResult bindingResult) {
 
     UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     String username = userDetails.getUsername();

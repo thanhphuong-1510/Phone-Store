@@ -21,6 +21,6 @@ public interface DienThoaiRepository extends JpaRepository<DienThoai, Integer> {
       "(coalesce(:dungLuongIdList, null) is null or tpldt.dung_luong_id in :dungLuongIdList) and " +
       "(:min is null or tpldt.gia_tien >= :min) and " +
       "(:max is null or tpldt.gia_tien <= :max)", nativeQuery = true)
-  Page<DienThoai> timKiem(List<Integer> hangIdList, List<Integer> mauSacIdList, List<Integer> dungLuongIdList, BigDecimal min, BigDecimal max, Pageable pageable);
+  List<DienThoai> timKiem(List<Integer> hangIdList, List<Integer> mauSacIdList, List<Integer> dungLuongIdList, BigDecimal min, BigDecimal max);
 
 }

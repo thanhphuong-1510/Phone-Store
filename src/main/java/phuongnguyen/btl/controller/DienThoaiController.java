@@ -1,10 +1,8 @@
 package phuongnguyen.btl.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import phuongnguyen.btl.entity.*;
 import phuongnguyen.btl.service.DienThoaiService;
@@ -17,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/dien-thoai")
@@ -46,12 +43,9 @@ public class DienThoaiController {
   }
 
   @PostMapping("/tim-kiem")
-  public String gdDienThoaiTimKiem(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                   @RequestParam(value = "size", defaultValue = "20") Integer size,
-                                   @ModelAttribute("selectedHang") SelectedHang selectedHang,
+  public String gdDienThoaiTimKiem(@ModelAttribute("selectedHang") SelectedHang selectedHang,
                                    @ModelAttribute("selectedPhanLoaiDienThoai") SelectedPhanLoaiDienThoai selectedPhanLoaiDienThoai,
                                    @ModelAttribute("selectedMoney") SelectedMoney selectedMoney,
-                                   BindingResult bindingResult,
                                    Model model) {
     List<Integer> hangIdList = new ArrayList<>();
     List<Integer> mauSacIdList = new ArrayList<>();
@@ -85,12 +79,7 @@ public class DienThoaiController {
       max = selectedMoney.getMax();
     }
 
-    Page<DienThoai> dienThoaiList = dienThoaiService.timKiem(hangIdList, mauSacIdList, dungLuongIdList, min, max, page, size);
-    int totalPages = dienThoaiList.getTotalPages();
-    if (totalPages > 0) {
-      List<Integer> soTrang = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-      model.addAttribute("soTrang", soTrang);
-    }
+    List<DienThoai> dienThoaiList = dienThoaiService.timKiem(hangIdList, mauSacIdList, dungLuongIdList, min, max);
 
     List<Hang> hangList = hangService.getAll();
     List<MauSac> mauSacList = mauSacService.getAll();

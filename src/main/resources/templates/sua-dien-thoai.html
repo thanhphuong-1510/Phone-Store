@@ -131,9 +131,9 @@
                     <button type="button" class="btn btn-danger" onclick="xoaPhanLoai()">Xóa phân loại</button>
                 </div>
             </div>
-            <div class="row" style="margin: 0rem 3rem;">
+            <div class="row">
                 <div class="col-12 row-phanloai" th:each="selectedPhanLoaiDienThoai, stat : ${selectedPhanLoaiDienThoaiList}">
-                    <div class="row" style="margin: 0rem 3rem;">
+                    <div class="row">
                         <input name="selectedIdList" th:value="${selectedPhanLoaiDienThoai.selectedIdList[0]}" type="hidden" class="form-control"
                                th:id="${'pldt_id_' + stat.index}">
                         <div class="col-3 mb-4">
@@ -172,7 +172,7 @@
                 <div class="row mt-3">
                     <h4>Thông tin bảo hành</h4>
                 </div>
-                <div class="row" style="margin: 0rem 3rem;">
+                <div class="row">
                     <div class="col-12 mb-4">
                         <label for="baoHanh_thoiGian" class="form-label">Thời gian</label>
                         <input th:field="*{baoHanh.thoiGian}" type="date" class="form-control" id="baoHanh_thoiGian" required>

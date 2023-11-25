@@ -104,9 +104,7 @@ public class AdminDienThoaiController {
                                          @ModelAttribute("selectedHang") SelectedHang selectedHang,
                                          @ModelAttribute("selectedPhanLoaiDienThoai") SelectedPhanLoaiDienThoai selectedPhanLoaiDienThoai,
                                          @RequestParam("anhDienThoai") MultipartFile anhDienThoai,
-                                         HttpServletRequest request,
-                                         BindingResult bindingResult,
-                                         Model model) throws IOException {
+                                         BindingResult bindingResult) throws IOException {
 
     List<PhanLoaiDienThoai> phanLoaiDienThoaiList = new ArrayList<>();
     List<MauSac> selectedMauSacList = Arrays.asList(selectedPhanLoaiDienThoai.getSelectedMauSacList());
@@ -207,9 +205,7 @@ public class AdminDienThoaiController {
                                         @ModelAttribute("selectedHang") SelectedHang selectedHang,
                                         @ModelAttribute("selectedPhanLoaiDienThoai") SelectedPhanLoaiDienThoai selectedPhanLoaiDienThoai,
                                         @RequestParam("anhDienThoai") MultipartFile anhDienThoai,
-                                        HttpServletRequest request,
-                                        BindingResult bindingResult,
-                                        Model model) throws IOException {
+                                        BindingResult bindingResult) throws IOException {
 
     List<PhanLoaiDienThoai> phanLoaiDienThoaiList = new ArrayList<>();
     List<Integer> selectedIdList = Arrays.asList(selectedPhanLoaiDienThoai.getSelectedIdList());
