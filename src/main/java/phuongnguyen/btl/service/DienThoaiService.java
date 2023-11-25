@@ -39,11 +39,7 @@ public class DienThoaiService {
     return dienThoaiRepository.save(dienThoai);
   }
 
-  public Page<DienThoai> timKiem(List<Integer> hangIdList, List<Integer> mauSacIdList, List<Integer> dungLuongIdList, BigDecimal min, BigDecimal max, Integer page, Integer size) {
-    if (page <= 0) {
-      page = 1;
-    }
-    Pageable pageable = PageRequest.of(page - 1, size);
-    return dienThoaiRepository.timKiem(hangIdList, mauSacIdList, dungLuongIdList, min, max, pageable);
+  public List<DienThoai> timKiem(List<Integer> hangIdList, List<Integer> mauSacIdList, List<Integer> dungLuongIdList, BigDecimal min, BigDecimal max) {
+    return dienThoaiRepository.timKiem(hangIdList, mauSacIdList, dungLuongIdList, min, max);
   }
 }

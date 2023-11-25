@@ -48,8 +48,7 @@ public class DonHangController {
 
   @GetMapping("da-nhan/{donHangId}")
   public String gdDienThoaiDonHangDaNhan(@PathVariable("donHangId") Integer donHangId,
-                                         RedirectAttributes redirectAttrs,
-                                         Model model) {
+                                         RedirectAttributes redirectAttrs) {
     DonHang donHang = donHangService.timDonHangTheoId(donHangId);
     if (donHang == null) {
       redirectAttrs.addFlashAttribute("donHang_error", "Lỗi cập nhật đơn hàng");
@@ -65,8 +64,7 @@ public class DonHangController {
 
   @GetMapping("da-huy/{donHangId}")
   public String gdDienThoaiDonHangDaHuy(@PathVariable("donHangId") Integer donHangId,
-                                        RedirectAttributes redirectAttrs,
-                                        Model model) {
+                                        RedirectAttributes redirectAttrs) {
     DonHang donHang = donHangService.timDonHangTheoId(donHangId);
     if (donHang == null) {
       redirectAttrs.addFlashAttribute("donHang_error", "Lỗi cập nhật đơn hàng");

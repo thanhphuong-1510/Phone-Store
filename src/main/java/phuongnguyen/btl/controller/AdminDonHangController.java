@@ -1,14 +1,18 @@
 package phuongnguyen.btl.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import phuongnguyen.btl.entity.DonHang;
 import phuongnguyen.btl.entity.PhanLoaiDienThoai;
+import phuongnguyen.btl.entity.ThanhVien;
 import phuongnguyen.btl.service.DonHangService;
 import phuongnguyen.btl.service.PhanLoaiDienThoaiService;
+import phuongnguyen.btl.service.ThanhVienService;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +26,9 @@ public class AdminDonHangController {
 
   @Autowired
   private PhanLoaiDienThoaiService phanLoaiDienThoaiService;
+
+  @Autowired
+  private ThanhVienService thanhVienService;
 
   @GetMapping("")
   public String gdAdminDienThoaiDonHang(Model model) {
@@ -43,8 +50,11 @@ public class AdminDonHangController {
 
   @GetMapping("xac-nhan/{donHangId}")
   public String gdAdminDienThoaiDonHangDaNhan(@PathVariable("donHangId") Integer donHangId,
-                                              RedirectAttributes redirectAttrs,
-                                              Model model) {
+                                              RedirectAttributes redirectAttrs) {
+    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    String username = userDetails.getUsername();
+    ThanhVien thanhVien = thanhVienService.timThanhVienTheoUsername(username);
+
     DonHang donHang = donHangService.timDonHangTheoId(donHangId);
     if (donHang == null) {
       redirectAttrs.addFlashAttribute("donHang_error", "Lỗi cập nhật đơn hàng");
@@ -52,6 +62,7 @@ public class AdminDonHangController {
     }
 
     donHang.setTrangThai(1);
+    donHang.setNhanVien(thanhVien);
     donHangService.luuDonHang(donHang);
 
     return "redirect:/admin/quan-ly-don-hang";
@@ -60,8 +71,11 @@ public class AdminDonHangController {
 
   @GetMapping("dang-giao/{donHangId}")
   public String gdAdminDienThoaiDonHangDangGiao(@PathVariable("donHangId") Integer donHangId,
-                                                RedirectAttributes redirectAttrs,
-                                                Model model) {
+                                                RedirectAttributes redirectAttrs) {
+    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    String username = userDetails.getUsername();
+    ThanhVien thanhVien = thanhVienService.timThanhVienTheoUsername(username);
+
     DonHang donHang = donHangService.timDonHangTheoId(donHangId);
     if (donHang == null) {
       redirectAttrs.addFlashAttribute("donHang_error", "Lỗi cập nhật đơn hàng");
@@ -69,6 +83,7 @@ public class AdminDonHangController {
     }
 
     donHang.setTrangThai(2);
+    donHang.setNhanVien(thanhVien);
     donHangService.luuDonHang(donHang);
 
     return "redirect:/admin/quan-ly-don-hang";
@@ -77,8 +92,11 @@ public class AdminDonHangController {
 
   @GetMapping("da-huy/{donHangId}")
   public String gdAdminDienThoaiDonHangDaHuy(@PathVariable("donHangId") Integer donHangId,
-                                             RedirectAttributes redirectAttrs,
-                                             Model model) {
+                                             RedirectAttributes redirectAttrs) {
+    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    String username = userDetails.getUsername();
+    ThanhVien thanhVien = thanhVienService.timThanhVienTheoUsername(username);
+
     DonHang donHang = donHangService.timDonHangTheoId(donHangId);
     if (donHang == null) {
       redirectAttrs.addFlashAttribute("donHang_error", "Lỗi cập nhật đơn hàng");
@@ -86,6 +104,7 @@ public class AdminDonHangController {
     }
 
     donHang.setTrangThai(4);
+    donHang.setNhanVien(thanhVien);
     donHangService.luuDonHang(donHang);
 
 
