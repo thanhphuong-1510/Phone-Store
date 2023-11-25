@@ -7,27 +7,37 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
+    <style>
+        .nav-link {
+            font-size: 22px;
+        }
+    </style>
 </head>
 <body style="background-color: #f8f9fa!important">
-<nav class="navbar navbar-expand-sm bg-light justify-content-end">
-    <ul class="nav justify-content-start">
-        <div style="display:flex;">
+<div class="row" style="margin: 1rem 3rem;">
+    <div class="col-4">
+        <img th:src="@{/images/logo.png}" alt="Logo" style="padding: .5rem 1rem;"/>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-center" style="display:flex; list-style-type: none; padding: 0;">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Trang chủ</a>
+                <a class="nav-link" th:href="@{/trang-chu}">Trang chủ</a>
             </li>
-        </div>
-    </ul>
-    <ul class="nav justify-content-end">
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/thanh-vien/dang-ky}">Đăng ký</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/thanh-vien/dang-nhap}">Đăng nhập</a>
-        </li>
-    </ul>
-</nav>
+        </ul>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-ky}">Đăng ký</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-nhap}">Đăng nhập</a>
+            </li>
+        </ul>
+    </div>
+</div>
 <br/><br/>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="text-center alert alert-danger" th:if="${invalid_credentials_error != null}" th:text="${invalid_credentials_error}">

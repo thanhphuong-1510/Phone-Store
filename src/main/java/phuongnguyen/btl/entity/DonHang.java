@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -22,8 +23,11 @@ public class DonHang {
   @Column(name = "noi_nhan")
   private String noiNhan;
 
+  @Column(name = "so_luong")
+  private Integer soLuong;
+
   @Column(name = "tong_tien")
-  private Double tongTien;
+  private BigDecimal tongTien;
 
   @Column(name = "trang_thai")
   private Integer trangThai;
@@ -39,6 +43,7 @@ public class DonHang {
   @JoinColumn(name = "nhan_vien_id")
   private ThanhVien nhanVien;
 
-  @OneToMany(mappedBy = "donHang")
-  private List<ChiTietDonHang> chiTietDonHangList;
+  @ManyToOne
+  @JoinColumn(name = "phan_loai_id")
+  private PhanLoaiDienThoai phanLoaiDienThoai;
 }

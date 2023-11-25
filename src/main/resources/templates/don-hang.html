@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Đơn hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <style>
+        .nav-link {
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body style="background-color: #f8f9fa!important">
+<div class="row" style="margin: 1rem 3rem;">
+    <div class="col-4">
+        <img th:src="@{/images/logo.png}" alt="Logo" style="padding: .5rem 1rem; padding: 0;"/>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-center" style="display:flex; list-style-type: none; padding: 0;">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/trang-chu}">Trang chủ</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link" th:href="@{/admin}">Quản lý shop</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;" sec:authorize="isAuthenticated()">
+            <li class="nav-item">
+                <p style="padding: .5rem 1rem; margin: 0 !important; font-size: 22px;">Xin chào, <span sec:authentication="principal.username"></span>!
+                </p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Đăng xuất</a>
+            </li>
+        </ul>
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;" sec:authorize="!isAuthenticated()">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-ky}">Đăng ký</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-nhap}">Đăng nhập</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid mt-3">
+    <h2 class="text-center">QUẢN LÝ ĐƠN HÀNG</h2>
+    <h5 class="text-center alert alert-danger" th:if="${donHang_error != null}" th:text="${donHang_error}"></h5>
+    <div class="row mt-2" style="margin: 0rem 3rem;">
+        <table class="table table-hover table-bordered">
+            <thead class="table-dark">
+            <tr>
+                <th class="text-center" scope="col">Mã đơn</th>
+                <th class="text-center" scope="col">Tên sản phẩm</th>
+                <th class="text-center" scope="col">Trạng thái đơn hàng</th>
+                <th class="text-center" scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody th:each="donHang : ${donHangList}">
+            <tr>
+                <td class="text-center" th:text="${donHang.id}">
+                </td>
+                <td class="text-center" th:text="${donHang.phanLoaiDienThoai.dienThoai.ten}">
+                </td>
+                <td class="text-center" th:if="${donHang.trangThai == 0}">
+                    Chờ xác nhận
+                </td>
+                <td class="text-center" th:if="${donHang.trangThai == 1}">
+                    Đã xác nhận
+                </td>
+                <td class="text-center" th:if="${donHang.trangThai == 2}">
+                    Đang giao
+                </td>
+                <td class="text-center" th:if="${donHang.trangThai == 3}">
+                    Đã nhận được hàng
+                </td>
+                <td class="text-center" th:if="${donHang.trangThai == 4}">
+                    Đã hủy
+                </td>
+                <td class="text-center">
+                    <a style="text-decoration: none; color: black;" th:href="@{'/don-hang/da-nhan/' + ${donHang.id}}">
+                        <button type="button" th:if="${donHang.trangThai == 2}" class="btn btn-success">
+                            Đã nhận hàng
+                        </button>
+                    </a>
+                    <a style="text-decoration: none; color: black;" th:href="@{'/don-hang/da-huy/' + ${donHang.id}}">
+                        <button type="button" th:if="${donHang.trangThai == 0}" class="btn btn-danger">
+                            Hủy đơn
+                        </button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

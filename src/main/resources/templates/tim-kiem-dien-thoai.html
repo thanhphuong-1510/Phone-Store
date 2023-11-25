@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
 <head>
     <meta charset="UTF-8">
     <title>Trang chủ</title>
@@ -54,9 +55,6 @@
             </li>
             <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                 <a class="nav-link" th:href="@{/admin}">Quản lý shop</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/don-hang}">Đơn hàng</a>
             </li>
         </ul>
     </div>

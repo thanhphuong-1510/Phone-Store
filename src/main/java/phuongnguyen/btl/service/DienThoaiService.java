@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import phuongnguyen.btl.entity.DienThoai;
 import phuongnguyen.btl.repository.DienThoaiRepository;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,12 +18,16 @@ public class DienThoaiService {
   @Autowired
   private DienThoaiRepository dienThoaiRepository;
 
-  public Page<DienThoai> getAll(Integer page, Integer size) {
+  public Page<DienThoai> getAllPhanTrang(Integer page, Integer size) {
     if (page <= 0) {
       page = 1;
     }
     Pageable pageable = PageRequest.of(page - 1, size);
     return dienThoaiRepository.findAll(pageable);
+  }
+
+  public List<DienThoai> getAll() {
+    return dienThoaiRepository.findAll();
   }
 
   public DienThoai findById(Integer id) {
@@ -31,5 +37,13 @@ public class DienThoaiService {
 
   public DienThoai themMoiHoacCapNhat(DienThoai dienThoai) {
     return dienThoaiRepository.save(dienThoai);
+  }
+
+  public Page<DienThoai> timKiem(List<Integer> hangIdList, List<Integer> mauSacIdList, List<Integer> dungLuongIdList, BigDecimal min, BigDecimal max, Integer page, Integer size) {
+    if (page <= 0) {
+      page = 1;
+    }
+    Pageable pageable = PageRequest.of(page - 1, size);
+    return dienThoaiRepository.timKiem(hangIdList, mauSacIdList, dungLuongIdList, min, max, pageable);
   }
 }

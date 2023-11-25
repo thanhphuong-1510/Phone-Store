@@ -31,43 +31,55 @@
         .active {
             background-color: #ddd;
         }
+
+        .card:hover {
+            background-color: #ddd;
+        }
+
+        .nav-link {
+            font-size: 22px;
+        }
     </style>
 </head>
 <body style="background-color: #f8f9fa!important">
-<nav class="navbar navbar-expand-sm bg-light justify-content-end">
-    <ul class="nav justify-content-start">
-        <div style="display:flex;">
+<div class="row" style="margin: 1rem 3rem;">
+    <div class="col-4">
+        <img th:src="@{/images/logo.png}" alt="Logo" style="padding: .5rem 1rem; padding: 0;"/>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-center" style="display:flex; list-style-type: none; padding: 0;">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Trang chủ</a>
+                <a class="nav-link" th:href="@{/trang-chu}">Trang chủ</a>
             </li>
-        </div>
-    </ul>
-    <ul class="nav justify-content-end">
-        <div style="display:flex;" sec:authorize="isAuthenticated()">
             <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                 <a class="nav-link" th:href="@{/admin}">Quản lý shop</a>
             </li>
+        </ul>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;" sec:authorize="isAuthenticated()">
             <li class="nav-item">
-                <p style="padding: .5rem 1rem; margin: 0 !important;">Xin chào, <span sec:authentication="principal.username"></span>!</p>
+                <p style="padding: .5rem 1rem; margin: 0 !important; font-size: 22px;">Xin chào, <span sec:authentication="principal.username"></span>!
+                </p>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Đăng xuất</a>
             </li>
-        </div>
-        <div style="display:flex;" sec:authorize="!isAuthenticated()">
+        </ul>
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;" sec:authorize="!isAuthenticated()">
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/thanh-vien/dang-ky}">Đăng ký</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/thanh-vien/dang-nhap}">Đăng nhập</a>
             </li>
-        </div>
-    </ul>
-</nav>
+        </ul>
+    </div>
+</div>
 <div class="container-fluid mt-3">
     <h2 class="text-center">QUẢN LÝ ĐIỆN THOẠI</h2>
-    <div class="row">
-        <div class="offset-6 col-6 text-end">
+    <div class="row" style="margin: 0rem 3rem;">
+        <div class="offset-6 col-6 text-end" style="padding: 0">
             <a style="text-decoration: none; color: black;" th:href="@{/admin/quan-ly-dien-thoai/them-dien-thoai}">
                 <button type="button" class="btn btn-info">
                     Thêm mới
@@ -75,7 +87,7 @@
             </a>
         </div>
     </div>
-    <div class="row mt-2">
+    <div class="row mt-2" style="margin: 0rem 3rem;">
         <table class="table table-hover table-bordered">
             <thead class="table-dark">
             <tr>
@@ -91,7 +103,7 @@
             </thead>
             <tbody th:each="dienThoai : ${dienThoaiList}">
             <tr>
-                <td>
+                <td class="text-center">
                     <img style="width: 300px; height: 300px;"
                          th:src="@{${dienThoai.anh}}" alt="Ảnh điện thoại"/>
                 </td>
@@ -142,8 +154,8 @@
             </tbody>
         </table>
     </div>
-    <div class="row">
-        <div class="col-12 text-end">
+    <div class="row" style="margin: 0rem 3rem;">
+        <div class="col-12 text-end" style="padding: 0">
             <span th:if="${dienThoaiList.totalPages > 0}" class="my-pagination"
                   th:each="trang : ${soTrang}">
                 <a th:href="@{/admin/quan-ly-dien-thoai(size=${dienThoaiList.size}, page=${trang})}" th:text=${trang}
