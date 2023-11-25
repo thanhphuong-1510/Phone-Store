@@ -1,6 +1,5 @@
 package phuongnguyen.btl.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -13,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import phuongnguyen.btl.entity.*;
 import phuongnguyen.btl.service.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -31,9 +29,6 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("/admin/quan-ly-dien-thoai")
 public class AdminDienThoaiController {
-
-  @Autowired
-  private ObjectMapper mapper;
 
   @Autowired
   private DienThoaiService dienThoaiService;
