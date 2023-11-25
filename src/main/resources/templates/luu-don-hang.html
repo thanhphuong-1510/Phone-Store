@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Đặt hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <style>
+        .nav-link {
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body style="background-color: #f8f9fa!important">
+<div class="row" style="margin: 1rem 3rem;">
+    <div class="col-4">
+        <img th:src="@{/images/logo.png}" alt="Logo" style="padding: .5rem 1rem; padding: 0;"/>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-center" style="display:flex; list-style-type: none; padding: 0;">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/trang-chu}">Trang chủ</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link" th:href="@{/admin}">Quản lý shop</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;" sec:authorize="isAuthenticated()">
+            <li class="nav-item">
+                <p style="padding: .5rem 1rem; margin: 0 !important; font-size: 22px;">Xin chào, <span sec:authentication="principal.username"></span>!
+                </p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Đăng xuất</a>
+            </li>
+        </ul>
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;" sec:authorize="!isAuthenticated()">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-ky}">Đăng ký</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-nhap}">Đăng nhập</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid mt-3">
+    <h2 class="text-center">Đặt hàng</h2>
+    <div class="row mt-2" style="margin: 0rem 3rem;">
+        <form
+                method="post"
+                th:action="@{/dat-hang/save}">
+            <div class="row" style="margin: 0rem 3rem;">
+                <h4>Thông tin đơn hàng</h4>
+            </div>
+
+            <input name="dienThoaiId" type="hidden" class="form-control" id="dienthoai_id" th:field="${selectedPhanLoaiDienThoai.dienThoai.id}"
+                   th:value="${selectedPhanLoaiDienThoai.dienThoai.id}">
+            <input name="selectedPhanLoaiDienThoaiId" type="hidden" class="form-control" id="selectedPhanLoaiDienThoai_id"
+                   th:field="${selectedPhanLoaiDienThoai.id}" th:value="${selectedPhanLoaiDienThoai.id}">
+
+            <div class="row" style="margin: 0rem 3rem;">
+                <div class="col-4">
+                    <label for="noiNhan" class="form-label">Nơi nhận</label>
+                    <input th:field="${selectedDonHang.noiNhan}" type="text" class="form-control" id="noiNhan" required>
+                </div>
+            </div>
+            <div class="row" style="margin: 0rem 3rem;">
+                <div class="col-4">
+                    <label for="soLuong" class="form-label">Số lượng: </label>
+                    <input th:field="${selectedDonHang.soLuong}" th:value="${selectedDonHang.soLuong}" type="hidden" class="form-control"
+                           id="soLuong">
+                    <span th:text="${selectedDonHang.soLuong}"></span>
+                </div>
+            </div>
+            <div class="row" style="margin: 0rem 3rem;">
+                <div class="col-4">
+                    <label for="donGia" class="form-label">Đơn giá: </label>
+                    <input th:field="${selectedPhanLoaiDienThoai.giaTien}" th:value="${selectedPhanLoaiDienThoai.giaTien}" type="hidden" class="form-control"
+                           id="giaTien">
+                    <span id="donGia" th:text="${selectedPhanLoaiDienThoai.giaTien}"></span>
+                </div>
+            </div>
+            <div class="row" style="margin: 0rem 3rem;">
+                <div class="col-4">
+                    <label for="tongTien" class="form-label">Tổng tiền: </label>
+                    <input th:field="${selectedDonHang.tongTien}" th:value="${selectedDonHang.tongTien}" type="hidden" class="form-control"
+                           id="tongTien">
+                    <span th:text="${selectedDonHang.tongTien}"></span>
+                </div>
+            </div>
+            <div class="row" style="margin: 0rem 3rem;">
+                <div class="col-4">
+                    <label for="selectedDonHang_ghiChu" class="form-label">Ghi chú</label>
+                    <textarea th:field="*{selectedDonHang.ghiChu}" rows="5" class="form-control" id="selectedDonHang_ghiChu"></textarea>
+                </div>
+            </div>
+            <div class="row mt-4 mb-5" style="margin: 0rem 3rem;">
+                <div class="col-6 text-end">
+                    <button class="btn btn-primary" type="submit">Lưu</button>
+                </div>
+                <div class="col-6">
+                    <a style="text-decoration: none; color: black;" th:href="@{'/dien-thoai/chi-tiet/' + ${dienThoai.id}}">
+                        <button type="button" class="btn btn-danger">
+                            Hủy
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

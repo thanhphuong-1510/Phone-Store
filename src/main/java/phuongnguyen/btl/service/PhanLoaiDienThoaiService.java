@@ -6,6 +6,7 @@ import phuongnguyen.btl.entity.PhanLoaiDienThoai;
 import phuongnguyen.btl.repository.PhanLoaiDienThoaiRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PhanLoaiDienThoaiService {
@@ -19,5 +20,10 @@ public class PhanLoaiDienThoaiService {
 
   public List<PhanLoaiDienThoai> getByDienThoaiId(Integer dienThoaiId) {
     return phanLoaiDienThoaiRepository.getByDienThoaiId(dienThoaiId);
+  }
+
+  public PhanLoaiDienThoai getById(Integer id) {
+    Optional<PhanLoaiDienThoai> optionalPhanLoaiDienThoai = phanLoaiDienThoaiRepository.findById(id);
+    return optionalPhanLoaiDienThoai.orElse(null);
   }
 }

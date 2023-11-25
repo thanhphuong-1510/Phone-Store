@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -24,7 +25,7 @@ public class HoaDon {
   private LocalDate ngayThanhToan;
 
   @Column(name = "tong_tien")
-  private Double tongTien;
+  private BigDecimal tongTien;
 
   @Column(name = "ghi_chu")
   private String ghiChu;

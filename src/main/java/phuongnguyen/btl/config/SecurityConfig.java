@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import phuongnguyen.btl.service.ThanhVienDetailsService;
 
 @Configuration
@@ -48,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/", "/trang-chu", "/dien-thoai/**", "/images/**", "/trang-chu/**", "/thanh-vien/dang-ky/**", "/thanh-vien/dang-nhap/**", "/thanh-vien/dang-xuat/**").permitAll()
+        .antMatchers("/", "/dien-thoai/**", "/**/*.{js,html,css}", "/images/**", "/trang-chu/**", "/thanh-vien/dang-ky/**", "/thanh-vien/dang-nhap/**", "/thanh-vien/dang-xuat/**").permitAll()
         .antMatchers("/admin/**").hasRole("ADMIN")
         .anyRequest().authenticated()
         .and()

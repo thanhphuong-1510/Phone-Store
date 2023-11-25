@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Admin</title>
@@ -7,22 +9,54 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
+    <style>
+        .card:hover {
+            background-color: #ddd;
+        }
+
+        .nav-link {
+            font-size: 22px;
+        }
+    </style>
 </head>
 <body style="background-color: #f8f9fa!important">
-<nav class="navbar navbar-expand-sm bg-light justify-content-end">
-    <ul class="nav justify-content-start">
-        <div style="display:flex;">
+<div class="row" style="margin: 1rem 3rem;">
+    <div class="col-4">
+        <img th:src="@{/images/logo.png}" alt="Logo" style="padding: .5rem 1rem;"/>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-center" style="display:flex; list-style-type: none; padding: 0;">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Trang chủ</a>
+                <a class="nav-link" th:href="@{/trang-chu}">Trang chủ</a>
             </li>
-        </div>
-    </ul>
-    <ul class="nav justify-content-center">
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/admin/quan-ly-dien-thoai}">Quản lý điện thoại</a>
-        </li>
-    </ul>
-</nav>
+            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link" th:href="@{/admin/quan-ly-dien-thoai}">Quản lý điện thoại</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link" th:href="@{/admin/quan-ly-don-hang}">Quản lý đơn hàng</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;" sec:authorize="isAuthenticated()">
+            <li class="nav-item">
+                <p style="padding: .5rem 1rem; margin: 0 !important; font-size: 22px;">Xin chào, <span sec:authentication="principal.username"></span>!
+                </p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Đăng xuất</a>
+            </li>
+        </ul>
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;" sec:authorize="!isAuthenticated()">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-ky}">Đăng ký</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/thanh-vien/dang-nhap}">Đăng nhập</a>
+            </li>
+        </ul>
+    </div>
+</div>
 <br/><br/><br/>
 </body>
 </html>

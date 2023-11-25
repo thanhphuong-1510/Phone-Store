@@ -12,48 +12,61 @@
     <script type="text/javascript" th:src="@{/multiselect-dropdown.js}"></script>
     <script type="text/javascript" th:src="@{/them-moi-phan-loai.js}"></script>
     <script type="text/javascript" th:src="@{/xoa-phan-loai.js}"></script>
+    <style>
+        .card:hover {
+            background-color: #ddd;
+        }
+
+        .nav-link {
+            font-size: 22px;
+        }
+    </style>
 </head>
 <body style="background-color: #f8f9fa!important">
-<nav class="navbar navbar-expand-sm bg-light justify-content-end">
-    <ul class="nav justify-content-start">
-        <div style="display:flex;">
+<div class="row" style="margin: 1rem 3rem;">
+    <div class="col-4">
+        <img th:src="@{/images/logo.png}" alt="Logo" style="padding: .5rem 1rem;"/>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-center" style="display:flex; list-style-type: none; padding: 0;">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Trang chủ</a>
+                <a class="nav-link" th:href="@{/trang-chu}">Trang chủ</a>
             </li>
-        </div>
-    </ul>
-    <ul class="nav justify-content-end">
-        <div style="display:flex;" sec:authorize="isAuthenticated()">
             <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                 <a class="nav-link" th:href="@{/admin}">Quản lý shop</a>
             </li>
+        </ul>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;" sec:authorize="isAuthenticated()">
             <li class="nav-item">
-                <p style="padding: .5rem 1rem; margin: 0 !important;">Xin chào, <span sec:authentication="principal.username"></span>!</p>
+                <p style="padding: .5rem 1rem; margin: 0 !important; font-size: 22px;">Xin chào, <span sec:authentication="principal.username"></span>!
+                </p>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Đăng xuất</a>
             </li>
-        </div>
-        <div style="display:flex;" sec:authorize="!isAuthenticated()">
+        </ul>
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;" sec:authorize="!isAuthenticated()">
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/thanh-vien/dang-ky}">Đăng ký</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/thanh-vien/dang-nhap}">Đăng nhập</a>
             </li>
-        </div>
-    </ul>
-</nav>
-<div class="container-fluid mt-3">
+        </ul>
+    </div>
+</div>
+<div class="container-fluid mt-3" >
     <h2 class="text-center">SỬA ĐIỆN THOẠI</h2>
     <form
             method="post"
             th:action="@{/admin/quan-ly-dien-thoai/sua-dien-thoai/save}"
             enctype="multipart/form-data">
-        <div class="row">
+        <div class="row" style="margin: 0rem 3rem;">
             <h4>Thông tin điện thoại</h4>
         </div>
-        <div class="row">
+        <div class="row" style="margin: 0rem 3rem;">
             <input th:field="*{dienThoai.id}" type="hidden" class="form-control" id="dienthoai_id">
             <div class="col-4 mb-4">
                 <label for="dienthoai_ten" class="form-label">Tên điện thoại</label>
@@ -104,13 +117,13 @@
                 <input name="anhDienThoai" type="file" accept="image/png, image/jpeg" class="form-control" id="anhDienThoai">
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="margin: 0rem 3rem;">
             <div class="col-12">
                 <label for="dienthoai_moTaDienThoai">Mô tả</label>
                 </label><textarea th:field="*{dienThoai.moTaDienThoai}" rows="5" class="form-control" id="dienthoai_moTaDienThoai"></textarea>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="margin: 0rem 3rem;">
             <div class="row mt-3">
                 <div class="col-4">
                     <h4>Phân loại điện thoại</h4>
@@ -118,20 +131,20 @@
                     <button type="button" class="btn btn-danger" onclick="xoaPhanLoai()">Xóa phân loại</button>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin: 0rem 3rem;">
                 <div class="col-12 row-phanloai" th:each="selectedPhanLoaiDienThoai, stat : ${selectedPhanLoaiDienThoaiList}">
-                    <div class="row">
+                    <div class="row" style="margin: 0rem 3rem;">
                         <input name="selectedIdList" th:value="${selectedPhanLoaiDienThoai.selectedIdList[0]}" type="hidden" class="form-control"
                                th:id="${'pldt_id_' + stat.index}">
                         <div class="col-3 mb-4">
-                            <label th:for="${'pldt_soLuong_' + stat.index}" class="form-label">Số lượng</label>
-                            <input name="selectedSoLuong" type="text" class="form-control"
+                            <label th:for="${'pldt_soLuong_' + stat.index}" min="0" class="form-label">Số lượng</label>
+                            <input name="selectedSoLuong" type="number" min="0" class="form-control"
                                    th:id="${'pldt_soLuong_' + stat.index}" th:value="${selectedPhanLoaiDienThoai.selectedSoLuong[0]}"
                                    placeholder="Số lượng" required>
                         </div>
                         <div class="col-3 mb-4">
                             <label th:for="${'pldt_giaTien_' + stat.index}" class="form-label">Giá tiền</label>
-                            <input name="selectedGiaTien" type="text" class="form-control"
+                            <input name="selectedGiaTien" type="number" min="0" class="form-control"
                                    th:id="${'pldt_giaTien_' + stat.index}" th:value="${selectedPhanLoaiDienThoai.selectedGiaTien[0]}"
                                    placeholder="Giá tiền" required>
                         </div>
@@ -154,12 +167,12 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
+        <div class="row mt-3" style="margin: 0rem 3rem;">
             <div class="col-4">
                 <div class="row mt-3">
                     <h4>Thông tin bảo hành</h4>
                 </div>
-                <div class="row">
+                <div class="row" style="margin: 0rem 3rem;">
                     <div class="col-12 mb-4">
                         <label for="baoHanh_thoiGian" class="form-label">Thời gian</label>
                         <input th:field="*{baoHanh.thoiGian}" type="date" class="form-control" id="baoHanh_thoiGian" required>
@@ -174,7 +187,7 @@
                 <div class="row mt-3">
                     <h4>Thông tin mã giảm giá</h4>
                 </div>
-                <div class="row">
+                <div class="row" style="margin: 0rem 3rem;">
                     <div class="col-12 mb-4">
                         <label for="maGG_id" class="form-label">Mã giảm giá</label>
                         <select multiple="multiple" id="maGG_id" th:field="${selectedMaGGList.selectedMaGGList}" class="form-control">
@@ -184,7 +197,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4 mb-5">
+        <div class="row mt-4 mb-5" style="margin: 0rem 3rem;">
             <div class="col-6 text-end">
                 <button class="btn btn-primary" type="submit">Lưu</button>
             </div>

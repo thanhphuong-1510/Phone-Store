@@ -16,6 +16,7 @@ import phuongnguyen.btl.service.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,7 +58,7 @@ public class AdminDienThoaiController {
       Model model,
       @RequestParam(value = "page", defaultValue = "0") Integer page,
       @RequestParam(value = "size", defaultValue = "10") Integer size) {
-    Page<DienThoai> dienThoaiList = dienThoaiService.getAll(page, size);
+    Page<DienThoai> dienThoaiList = dienThoaiService.getAllPhanTrang(page, size);
     int totalPages = dienThoaiList.getTotalPages();
     if (totalPages > 0) {
       List<Integer> soTrang = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
@@ -111,7 +112,7 @@ public class AdminDienThoaiController {
     List<MauSac> selectedMauSacList = Arrays.asList(selectedPhanLoaiDienThoai.getSelectedMauSacList());
     List<DungLuong> selectedDungLuongList = Arrays.asList(selectedPhanLoaiDienThoai.getSelectedDungLuongList());
     List<Integer> selectedSoLuong = Arrays.asList(selectedPhanLoaiDienThoai.getSelectedSoLuong());
-    List<Double> selectedGiaTien = Arrays.asList(selectedPhanLoaiDienThoai.getSelectedGiaTien());
+    List<BigDecimal> selectedGiaTien = Arrays.asList(selectedPhanLoaiDienThoai.getSelectedGiaTien());
 
     for (int i = 0; i < selectedPhanLoaiDienThoai.getSelectedSoLuong().length; i++) {
       PhanLoaiDienThoai phanLoaiDienThoai = new PhanLoaiDienThoai();
@@ -170,7 +171,7 @@ public class AdminDienThoaiController {
     List<DungLuong> dungLuongList = dungLuongService.getAll();
 
     SelectedMaGG selectedMaGG = new SelectedMaGG(dienThoai.getMaGGList());
-    SelectedHang selectedHang = new SelectedHang(dienThoai.getHang());
+    SelectedHang selectedHang = new SelectedHang(dienThoai.getHang(), new Hang[]{});
     List<SelectedPhanLoaiDienThoai> selectedPhanLoaiDienThoaiList = new ArrayList<>();
 
     List<PhanLoaiDienThoai> phanLoaiDienThoaiList = phanLoaiDienThoaiService.getByDienThoaiId(dienThoai.getId());
@@ -178,7 +179,7 @@ public class AdminDienThoaiController {
       SelectedPhanLoaiDienThoai selectedPhanLoaiDienThoai = new SelectedPhanLoaiDienThoai();
       selectedPhanLoaiDienThoai.setSelectedIdList(new Integer[]{phanLoaiDienThoai.getId()});
       selectedPhanLoaiDienThoai.setSelectedSoLuong(new Integer[]{phanLoaiDienThoai.getSoLuong()});
-      selectedPhanLoaiDienThoai.setSelectedGiaTien(new Double[]{phanLoaiDienThoai.getGiaTien()});
+      selectedPhanLoaiDienThoai.setSelectedGiaTien(new BigDecimal[]{phanLoaiDienThoai.getGiaTien()});
       selectedPhanLoaiDienThoai.setSelectedMauSacList(new MauSac[]{phanLoaiDienThoai.getMauSac()});
       selectedPhanLoaiDienThoai.setSelectedDungLuongList(new DungLuong[]{phanLoaiDienThoai.getDungLuong()});
       selectedPhanLoaiDienThoaiList.add(selectedPhanLoaiDienThoai);
@@ -215,7 +216,7 @@ public class AdminDienThoaiController {
     List<MauSac> selectedMauSacList = Arrays.asList(selectedPhanLoaiDienThoai.getSelectedMauSacList());
     List<DungLuong> selectedDungLuongList = Arrays.asList(selectedPhanLoaiDienThoai.getSelectedDungLuongList());
     List<Integer> selectedSoLuong = Arrays.asList(selectedPhanLoaiDienThoai.getSelectedSoLuong());
-    List<Double> selectedGiaTien = Arrays.asList(selectedPhanLoaiDienThoai.getSelectedGiaTien());
+    List<BigDecimal> selectedGiaTien = Arrays.asList(selectedPhanLoaiDienThoai.getSelectedGiaTien());
 
     for (int i = 0; i < selectedPhanLoaiDienThoai.getSelectedSoLuong().length; i++) {
       PhanLoaiDienThoai phanLoaiDienThoai = new PhanLoaiDienThoai();

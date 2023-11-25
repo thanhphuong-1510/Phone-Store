@@ -14,45 +14,53 @@
         .card:hover {
             background-color: #ddd;
         }
+
+        .nav-link {
+            font-size: 22px;
+        }
     </style>
 </head>
 <body style="background-color: #f8f9fa!important">
-<nav class="navbar navbar-expand-sm bg-light justify-content-end">
-    <ul class="nav justify-content-start">
-        <div style="display:flex;">
+<div class="row" style="margin: 1rem 3rem;">
+    <div class="col-4">
+        <img th:src="@{/images/logo.png}" alt="Logo" style="padding: .5rem 1rem; padding: 0;"/>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-center" style="display:flex; list-style-type: none;">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Trang chủ</a>
+                <a class="nav-link" th:href="@{/trang-chu}">Trang chủ</a>
             </li>
-        </div>
-    </ul>
-    <ul class="nav justify-content-end">
-        <div style="display:flex;" sec:authorize="isAuthenticated()">
             <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                 <a class="nav-link" th:href="@{/admin}">Quản lý shop</a>
             </li>
+        </ul>
+    </div>
+    <div class="col-4">
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;" sec:authorize="isAuthenticated()">
             <li class="nav-item">
-                <p style="padding: .5rem 1rem; margin: 0 !important;">Xin chào, <span sec:authentication="principal.username"></span>!</p>
+                <p style="padding: .5rem 1rem; margin: 0 !important; font-size: 22px;">Xin chào, <span sec:authentication="principal.username"></span>!
+                </p>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/thanh-vien/dang-xuat}">Đăng xuất</a>
             </li>
-        </div>
-        <div style="display:flex;" sec:authorize="!isAuthenticated()">
+        </ul>
+        <ul class="justify-content-end" style="display:flex; list-style-type: none;" sec:authorize="!isAuthenticated()">
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/thanh-vien/dang-ky}">Đăng ký</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/thanh-vien/dang-nhap}">Đăng nhập</a>
             </li>
-        </div>
-    </ul>
-</nav>
+        </ul>
+    </div>
+</div>
 <br/><br/>
-<div class="container-fluid mt-3" style="padding-left: 100px; padding-right: 100px;">
+<div class="container-fluid mt-3">
     <form method="post"
           th:action="@{/dat-hang}"
           th:object="${selectedDienThoai}">
-        <div class="row">
+        <div class="row" style="margin: 0rem 3rem;">
             <div class="col-12">
                 <h2 th:text="${dienThoai.ten + ' - Hãng: ' + dienThoai.hang.ten}"></h2>
             </div>
@@ -76,19 +84,28 @@
                     <p style="padding-left: 2rem; margin: 0" th:text="'Mô tả: ' + ${dienThoai.baoHanh.moTa}"></p>
                 </div>
 
-                <button class="btn btn-primary mt-3" style="width: 100%" type="submit">Đặt hàng</button>
+                <br/><br/>
+                <div>
+                    <h5 class="text-center alert alert-danger" th:if="${pldt_soLuong_error != null}" th:text="${pldt_soLuong_error}"></h5>
+                    <span>Mua </span>
+                    <input type="number" th:field="*{soLuong}" th:value="${soLuong}" min="0" class="form-control"
+                           style="display: inline-block; width: inherit;"/>
+                    <span>cái</span>
+                </div>
+
+                <button class="btn btn-primary mt-3" style="width: 100%" type="submit">Đặt mua ngay</button>
             </div>
             <div class="col-4">
-                <h5 class="text-center alert alert-danger" th:if="${pldt_error != null}" th:text="${pldt_error}">
+                <h5 class="text-center alert alert-danger" th:if="${pldt_loai_error != null}" th:text="${pldt_loai_error}">
                 </h5>
                 <h3>Các loại điện thoại</h3>
                 <div th:each="plDienThoai : ${dienThoai.phanLoaiDienThoaiList}">
-                    <input type="radio" th:field="*{id}" th:value="${plDienThoai.id}"/>
+                    <input type="radio" th:field="*{id}" th:value="${plDienThoai.id}" th:checked="${selectedDienThoai.id == plDienThoai.id}"/>
                     <input type="hidden" name="dienThoaiId" th:value="${plDienThoai.dienThoai.id}"/>
-                    <span th:text="'Số lượng: ' + ${plDienThoai.soLuong} + ' - '"></span>
+                    <span th:text="'Số lượng đang có: ' + ${plDienThoai.soLuong} + ' - '"></span>
                     <span th:text="'Giá tiền: ' + ${plDienThoai.giaTien} + ' - '"></span>
                     <span th:style="${'color: ' + plDienThoai.mauSac.ma}" th:text="'Màu sắc: ' + ${plDienThoai.mauSac.moTa} + ' - '"></span>
-                    <span th:text="'Dung lượng: ' + ${plDienThoai.dungLuong.moTa} + ' - '"></span>
+                    <span th:text="'Dung lượng: ' + ${plDienThoai.dungLuong.moTa}"></span>
                 </div>
             </div>
         </div>
