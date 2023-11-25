@@ -73,7 +73,7 @@
             </div>
             <div class="col-4 mb-4">
                 <label for="hang_id" class="form-label">Hãng</label>
-                <select id="hang_id" th:field="${selectedHang.selectedHang}" class="form-control">
+                <select id="hang_id" th:field="*{selectedHang.selectedHang}" class="form-control">
                     <option th:each="hang : ${hangList}" th:text="${hang.ten}" th:value="${hang.id}"></option>
                 </select>
             </div>
@@ -182,7 +182,7 @@
                     <div class="col-12 mb-4">
                         <label for="maGG_id" class="form-label">Mã giảm giá</label>
                         <select multiple="multiple" id="maGG_id" th:field="${selectedMaGGList.selectedMaGGList}" class="form-control">
-                            <option th:each="maGG : ${maGGList}" th:text="${maGG.code}" th:value="${maGG.id}"></option>
+                            <option th:each="maGG : ${maGGList}" th:text="*{maGG.code}" th:value="${maGG.id}"></option>
                         </select>
                     </div>
                 </div>
